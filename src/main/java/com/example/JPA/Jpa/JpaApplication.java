@@ -1,9 +1,9 @@
 package com.example.JPA.Jpa;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.EntityTransaction;
-import jakarta.persistence.Persistence;
+import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class JpaApplication {
 
@@ -36,11 +36,44 @@ public class JpaApplication {
 
     public static void logic(EntityManager em){
         // 비지니스 로직 수행
-        System.out.println("[logic]===>");
+        //findAll(em);
+        //updateMember(em);
+        //insertMember(em);
+        //removeMember(em);
+        findMember(em);
+    }
+
+    public static void findAll(EntityManager em){
+        TypedQuery<Member> query = em.createQuery("select m from Member m",Member.class);
+        List<Member> members = query.getResultList();
+
+        for(Member vo :members)
+            System.out.println(vo.toString());
+    }
+
+    public static void updateMember(EntityManager em){
         String id = "1";
-        System.out.println("[logic]===>"+id);
         Member findMember = em.find(Member.class,id);
-        System.out.println(findMember.getId());
+        findMember.setName("sancho");
+    }
+
+    public static void insertMember(EntityManager em){
+        Member member = new Member();
+        member.setId("5");
+        member.setName("messi");
+        member.setAge(35);
+        em.persist(member);
+    }
+
+    public static void removeMember(EntityManager em){
+        String id = "5";
+        Member member = em.find(Member.class,id);
+        em.remove(member);
+    }
+
+    public static void findMember(EntityManager em){
+        String id = "1";
+        Member findMember = em.find(Member.class,id);
         System.out.println(findMember.toString());
     }
 }
